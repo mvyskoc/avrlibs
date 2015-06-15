@@ -1,0 +1,6 @@
+AVR 8-bit microcontroller library
+Copyright (C) 2015 Martin Vyskocil <m.vyskoc@seznam.cz>
+
+This product bundles Protothreads libraray, which is available under a
+"3-clause BSD" license.  For details, see pt/ or http://dunkels.com/adam/pt/.
+
