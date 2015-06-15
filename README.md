@@ -1,12 +1,12 @@
 # avrlibs
 AVR 8-bit microcontroller library
 
-The library is divided into the following folders. It is supposed you will
-copy content of required library folder into your project directory.
+The library is divided into the following folders, where is supposed you will copy content 
+of required folder into your project directory.
 
   BASE/ 
-    Base library - it is required from all other libraries. Access to digital I/O pins base on idea
-    from Arduino project, simple time measurement. 
+    Base library - functions needed in almost every program: work with digital I/O pins
+    by similar (but more efective) way as in Arduino project, macro function for time measurement, ...
   
   LCD_HD44780/
     Library for communication with alphanumerical liquid crystal displays (LCDs)
