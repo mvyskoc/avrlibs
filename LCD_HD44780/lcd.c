@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include "lcd.h"
-#include "avrtime.h"
-
 #include <stdlib.h>
 #include <util/delay.h>
+
+#include "avrtime.h"
+#include "lcd.h"
 
 /* Private functions and variables */
 #ifdef LCD_IS_8BITMODE
@@ -41,9 +41,7 @@ static const uint8_t LCD_ROW_OFFSET[4] PROGMEM = {0x00, 0x40, 0x10, 0x50};
 inline static void lcd_command_timeout(TLcd *lcd, uint16_t time);
 
 static void lcd_setWriteMode(TLcd *lcd);
-static void send(TLcd *lcd, uint8_t value, uint8_t mode);
 static void pulseEnable(TLcd *lcd);
-
 
 
 void lcd_init(TLcd *lcd, uint8_t pin_enable, TDisplayType lcd_type)
@@ -326,15 +324,15 @@ inline void lcd_bprint_P(TLcd *lcd, PGM_P text) {
 }
 
 inline void lcd_command(TLcd *lcd, uint8_t value) {
-  send(lcd, value, LOW);
+  lcd_send(lcd, value, LOW);
 }
 
 inline void lcd_write(TLcd *lcd, uint8_t value) {
-  send(lcd, value, HIGH);
+  lcd_send(lcd, value, HIGH);
 }
 
 // write either command or data, with automatic 4/8-bit selection
-static void send(TLcd *lcd, uint8_t value, uint8_t mode) {
+void lcd_send(TLcd *lcd, uint8_t value, uint8_t mode) {
   DIGITAL_WRITE(LCD_PIN_RS, mode);
 
   // if there is a RW pin indicated, set it low to Write

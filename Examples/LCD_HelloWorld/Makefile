@@ -7,6 +7,19 @@ F_CPU = 8000000
 # Target file name (without extension).
 TARGET = main
 
+# List any extra directories to look for include files here.
+#     Each directory must be seperated by a space.
+#     Use forward slashes for directory separators.
+#     For a directory that has spaces, enclose it in quotes.
+EXTRAINCDIRS = ../../BASE ../.. ../../LCD_HD44780
+
+# List any extra directories to look for compile source files.
+EXTRASRCDIRS = ../../BASE
+
+# List of C-source files. From these files is linked target application.
+# Each file must be separated by a space 
+CSRC = main.c avrtime.c avrio.c lcd.c
+
 # Target files directory
 TARGET_DIR = bin
 
@@ -28,16 +41,6 @@ OPT = s
 #     AVR Studio 4.10 requires dwarf-2.
 #     AVR [Extended] COFF format requires stabs, plus an avr-objcopy run.
 DEBUG = dwarf-2
-
-
-# List any extra directories to look for include files here.
-#     Each directory must be seperated by a space.
-#     Use forward slashes for directory separators.
-#     For a directory that has spaces, enclose it in quotes.
-EXTRAINCDIRS = ../../BASE
-
-# List any extra directories to look for compile source files.
-EXTRASRCDIRS = ../../BASE
 
 # Path where MAKE command will find other source files
 # directory names are separated by colons or blanks (On MS-Windows, 
@@ -70,6 +73,8 @@ CFLAGS += -fpack-struct
 CFLAGS += -fshort-enums
 CFLAGS += -Wall
 CFLAGS += -Wstrict-prototypes
+CFLAGS += -Wno-unused-function 
+# suppress warnings for not used functions
 # direct compiler to generate a section for each function and variable, 
 # allowing these to be left out on an individual basis, rather than just at a file level
 CFLAGS += -ffunction-sections		
@@ -95,13 +100,16 @@ EXTRALIBDIRS =
 #  -Wl,...:     tell GCC to pass this to linker.
 #    -Map:      create map file
 #    --cref:    add cross reference to  map file
-LDFLAGS = -Wl,-Map=$(TARGETDIR)/$(TARGET).map,--cref
-LDFLAGS += -Wl,-gc-sections,-gc-sections
+LDFLAGS = -Wl,-Map=$(TARGET_DIR)/$(TARGET).map,--cref
+LDFLAGS += -Wl,-gc-sections
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
+
+# Compiler flags to generate dependency files.
+GENDEPFLAGS = -MMD -MP -MF $(OBJDIR)/$(@F).d
 
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
-ALL_CFLAGS = -mmcu=$(MCU) -I. $(CFLAGS) 
+ALL_CFLAGS = -mmcu=$(MCU) -I. $(CFLAGS) $(GENDEPFLAGS)
 
 
 # Define programs and commands.
@@ -116,9 +124,9 @@ COPY = cp
 MKDIR = mkdir -p
 NM = avr-nm
 
-.PHONY: all clean size binary
+.PHONY: all clean size binary progavr
 
-TARGETS = $(addprefix $(TARGET_DIR)/$(TARGET)., elf hex eep lss sym bin)
+TARGETS = $(addprefix $(TARGET_DIR)/$(TARGET)., elf hex eep lss sym bin map)
 
 $(TARGET_DIR):
 	$(MKDIR) $@
@@ -128,20 +136,24 @@ $(OBJDIR):
 
 elf:  $(TARGET_DIR)/$(TARGET).elf
 hex:  $(TARGET_DIR)/$(TARGET).hex
-binary:  $(TARGET_DIR)/$(TARGET).bin
+binary: $(TARGET_DIR)/$(TARGET).bin
 lss:  $(TARGET_DIR)/$(TARGET).lss
 eep:  $(TARGET_DIR)/$(TARGET).eep
 sym:  $(TARGET_DIR)/$(TARGET).sym
 
-all: elf hex lss eep sym size
+all: elf hex binary lss eep sym size
 
 clean:
-	$(REMOVE) $(objects)
+	$(REMOVE) $(OBJDIR)/*.o $(OBJDIR)/*.o.d
 	$(REMOVE) $(TARGETS)
-	$(REMOVE) $(TARGETS)/$(TARGET).map
 
 $(TARGETS): | $(TARGET_DIR)
 
+
+# Send to AVR with TSB bootloader 
+# See: https://pypi.python.org/pypi/avrtsb
+progavr: $(TARGET_DIR)/$(TARGET).hex $(TARGET_DIR)/$(TARGET).eep
+	pytsb tsb /dev/ttyUSB0 -fw $(TARGET_DIR)/$(TARGET).hex
 
 # Create final output files (.hex, .eep) from ELF output file.
 %.hex: %.elf
@@ -165,25 +177,18 @@ $(TARGETS): | $(TARGET_DIR)
 size: $(TARGET_DIR)/$(TARGET).elf
 	$(SIZE) $<
 
-###################################################################################
-#############		RULES FOR PROJECT COMPILATION
-#############
 
-objects = $(addprefix $(OBJDIR)/, main.o avrtime.o avrio.o)
-$(objects): | $(OBJDIR)
-$(TARGET_DIR)/$(TARGET).elf: $(objects) 
+OBJS = $(addprefix $(OBJDIR)/, $(CSRC:.c=.o) )
+
+$(OBJS): | $(OBJDIR)
+$(TARGET_DIR)/$(TARGET).elf: $(OBJS) 
 	$(CC) $(ALL_CFLAGS) $^ --output $@ $(LDFLAGS)
 
-$(OBJDIR)/main.o: main.c
-	$(CC) $(ALL_CFLAGS) -c $<  -o $@
-
-$(OBJDIR)/avrtime.o : avrtime.c avrtime.h 
+$(OBJDIR)/%.o : %.c
 	$(CC) $(ALL_CFLAGS) -c $< -o $@
 
-$(OBJDIR)/avrio.o : avrio.c avrio.h avrio_pins.h 
-	$(CC) $(ALL_CFLAGS) -c $< -o $@
-
-
+# Include the dependency files.
+-include $(OBJS:.o=.o.d)
 
 
 

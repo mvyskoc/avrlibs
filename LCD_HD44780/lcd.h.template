@@ -23,8 +23,7 @@
    to control more than one LCDs, where all of them must use same data lines with only
    different enable lines.
 
-   Before you will use this library you must copy "lcd.h", "lcd.c" files to your
-   AVR project and modify header file "lcd.h" for your needs.
+   Before you use copy `lcd.h.template` to your project directory and rename to `lcd.h` 
 
    Example:
 
@@ -138,18 +137,24 @@ extern uint8_t lcd_print(TLcd *lcd, const char *text);
 extern uint8_t lcd_print_P(TLcd *lcd, PGM_P text);
 
 /* Blocking print functions */
-extern inline void lcd_bprint(TLcd *lcd, const char *text);
-extern inline void lcd_bprint_P(TLcd *lcd, PGM_P text);
+extern void lcd_bprint(TLcd *lcd, const char *text);
+extern void lcd_bprint_P(TLcd *lcd, PGM_P text);
 
-extern inline void lcd_command(TLcd *lcd, uint8_t value);
-extern inline void lcd_write(TLcd *lcd, uint8_t value);
+// write either command (mode=LOW) or data (mode=HIGH), 
+// with automatic 4/8-bit selection
+extern void lcd_send(TLcd *lcd, uint8_t value, uint8_t mode);
+
+// write command to LCD
+extern void lcd_command(TLcd *lcd, uint8_t value);
+
+// write data to LCD
+extern void lcd_write(TLcd *lcd, uint8_t value);
 
 //Return True If LCD is busy and cannot accept any orders
 extern uint8_t lcd_is_busy(TLcd *lcd);
 
-
 //Block program until lcd_is_busy is True
-extern inline void lcd_wait(TLcd *lcd);
+extern void lcd_wait(TLcd *lcd);
 
 // clear display, set cursor position to zero
 extern void lcd_clear(TLcd *lcd);
@@ -167,7 +172,7 @@ extern void lcd_display(TLcd *lcd);
 #define lcd_bdisplay(lcd) LCD_BLOCK_COMMAND(lcd_display, lcd)
 
 extern void lcd_gotoxy(TLcd *lcd, uint8_t col, uint8_t row);
-#define lcd_bgotoxy(lcd) LCD_BLOCK_COMMAND(lcd_gotoxy, lcd)
+#define lcd_bgotoxy(lcd, col, row) LCD_BLOCK_COMMAND(lcd_gotoxy, lcd, col, row)
 
 // Turns the underline cursor on/off
 extern void lcd_noCursor(TLcd *lcd);
