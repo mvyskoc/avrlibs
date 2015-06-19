@@ -34,5 +34,9 @@
 
 # Temporary files
 *~
+*.swp
+/Examples/**/bin
+/Examples/**/obj
 
-
+# Codeblocks files
+*.layout
