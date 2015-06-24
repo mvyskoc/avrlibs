@@ -8,6 +8,7 @@ Following functions are supported:
   * button double click event
 
 For more information look at the example [Buttons](../Examples/Buttons/main.c)
+
 **Requirements:**
   - BASE library (`avrio.h`, `avrtime.h`)
 
