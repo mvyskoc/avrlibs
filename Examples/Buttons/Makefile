@@ -11,14 +11,14 @@ TARGET = main
 #     Each directory must be seperated by a space.
 #     Use forward slashes for directory separators.
 #     For a directory that has spaces, enclose it in quotes.
-EXTRAINCDIRS = ../../BASE ../.. ../../LCD_HD44780
+EXTRAINCDIRS = ../../BASE ../../buttons
 
 # List any extra directories to look for compile source files.
 EXTRASRCDIRS = ../../BASE
 
 # List of C-source files. From these files is linked target application.
 # Each file must be separated by a space 
-CSRC = main.c avrtime.c avrio.c lcd.c
+CSRC = main.c buttons.c avrtime.c avrio.c
 
 # Target files directory
 TARGET_DIR = bin
@@ -120,6 +120,7 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 REMOVE = rm -f
 REMOVEDIR = rm -rf
+MOVE = mv -f
 COPY = cp
 MKDIR = mkdir -p
 NM = avr-nm
@@ -146,6 +147,7 @@ sym:  $(TARGET_DIR)/$(TARGET).sym
 
 clean:
 	$(REMOVE) $(OBJDIR)/*.o $(OBJDIR)/*.o.d
+	$(REMOVE) $(TARGET_DIR)/$(TARGET).lss.old
 	$(REMOVE) $(TARGETS)
 
 $(TARGETS): | $(TARGET_DIR)
@@ -168,6 +170,7 @@ progavr: $(TARGET_DIR)/$(TARGET).hex $(TARGET_DIR)/$(TARGET).eep
 
 # Create extended listing file from ELF output file.
 %.lss: %.elf
+	$(COPY) $@ $@.old || :
 	$(OBJDUMP) -h -S -z $< > $@
 
 # Create a symbol table from ELF output file.
