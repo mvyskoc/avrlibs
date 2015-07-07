@@ -36,6 +36,7 @@
 #define ioPORTK 10
 #define ioPORTL 11
 
+#define IOREG_TABLE_FIRST_ITEM
 
 #ifdef PORTA
     #ifndef PORT_LOW_INDEX
@@ -43,7 +44,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 0
-    #define IOREG_TABLE_PINA ,(ioreg_t) ((volatile uint16_t) &PINA)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINA (ioreg_t) ((volatile uint16_t) &PINA)
+    #else
+        #define IOREG_TABLE_PINA ,(ioreg_t) ((volatile uint16_t) &PINA)
+    #endif
 
     #define ioPINA0 0
     #define ioPINA1 1
@@ -101,7 +107,12 @@
 
     #define IIF_PORTA(true, false) true
 #else
-    #define IOREG_TABLE_PINA NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINA NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINA ,NOT_A_PORT
+    #endif
     #define IIF_PORTA(true, false) false
 #endif // PORTA
 
@@ -111,7 +122,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 1
-    #define IOREG_TABLE_PINB ,(ioreg_t) ((volatile uint16_t) &PINB)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINB (ioreg_t) ((volatile uint16_t) &PINB)
+    #else
+        #define IOREG_TABLE_PINB ,(ioreg_t) ((volatile uint16_t) &PINB)
+    #endif
 
     #define ioPINB0 8
     #define ioPINB1 9
@@ -169,7 +185,12 @@
 
     #define IIF_PORTB(true, false) true
 #else
-    #define IOREG_TABLE_PINB NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINB NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINB ,NOT_A_PORT
+    #endif
     #define IIF_PORTB(true, false) false
 #endif // PORTB
 
@@ -179,7 +200,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 2
-    #define IOREG_TABLE_PINC ,(ioreg_t) ((volatile uint16_t) &PINC)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINC (ioreg_t) ((volatile uint16_t) &PINC)
+    #else
+        #define IOREG_TABLE_PINC ,(ioreg_t) ((volatile uint16_t) &PINC)
+    #endif
 
     #define ioPINC0 16
     #define ioPINC1 17
@@ -237,7 +263,12 @@
 
     #define IIF_PORTC(true, false) true
 #else
-    #define IOREG_TABLE_PINC NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINC NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINC ,NOT_A_PORT
+    #endif
     #define IIF_PORTC(true, false) false
 #endif // PORTC
 
@@ -247,7 +278,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 3
-    #define IOREG_TABLE_PIND ,(ioreg_t) ((volatile uint16_t) &PIND)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PIND (ioreg_t) ((volatile uint16_t) &PIND)
+    #else
+        #define IOREG_TABLE_PIND ,(ioreg_t) ((volatile uint16_t) &PIND)
+    #endif
 
     #define ioPIND0 24
     #define ioPIND1 25
@@ -305,7 +341,12 @@
 
     #define IIF_PORTD(true, false) true
 #else
-    #define IOREG_TABLE_PIND NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PIND NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PIND ,NOT_A_PORT
+    #endif
     #define IIF_PORTD(true, false) false
 #endif // PORTD
 
@@ -315,7 +356,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 4
-    #define IOREG_TABLE_PINE ,(ioreg_t) ((volatile uint16_t) &PINE)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINE (ioreg_t) ((volatile uint16_t) &PINE)
+    #else
+        #define IOREG_TABLE_PINE ,(ioreg_t) ((volatile uint16_t) &PINE)
+    #endif
 
     #define ioPINE0 32
     #define ioPINE1 33
@@ -373,7 +419,12 @@
 
     #define IIF_PORTE(true, false) true
 #else
-    #define IOREG_TABLE_PINE NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINE NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINE ,NOT_A_PORT
+    #endif
     #define IIF_PORTE(true, false) false
 #endif // PORTE
 
@@ -383,7 +434,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 5
-    #define IOREG_TABLE_PINF ,(ioreg_t) ((volatile uint16_t) &PINF)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINF (ioreg_t) ((volatile uint16_t) &PINF)
+    #else
+        #define IOREG_TABLE_PINF ,(ioreg_t) ((volatile uint16_t) &PINF)
+    #endif
 
     #define ioPINF0 40
     #define ioPINF1 41
@@ -441,7 +497,12 @@
 
     #define IIF_PORTF(true, false) true
 #else
-    #define IOREG_TABLE_PINF NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINF NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINF ,NOT_A_PORT
+    #endif
     #define IIF_PORTF(true, false) false
 #endif // PORTF
 
@@ -451,7 +512,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 6
-    #define IOREG_TABLE_PING ,(ioreg_t) ((volatile uint16_t) &PING)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PING (ioreg_t) ((volatile uint16_t) &PING)
+    #else
+        #define IOREG_TABLE_PING ,(ioreg_t) ((volatile uint16_t) &PING)
+    #endif
 
     #define ioPING0 48
     #define ioPING1 49
@@ -509,7 +575,12 @@
 
     #define IIF_PORTG(true, false) true
 #else
-    #define IOREG_TABLE_PING NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PING NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PING ,NOT_A_PORT
+    #endif
     #define IIF_PORTG(true, false) false
 #endif // PORTG
 
@@ -519,7 +590,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 7
-    #define IOREG_TABLE_PINH ,(ioreg_t) ((volatile uint16_t) &PINH)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINH (ioreg_t) ((volatile uint16_t) &PINH)
+    #else
+        #define IOREG_TABLE_PINH ,(ioreg_t) ((volatile uint16_t) &PINH)
+    #endif
     #ifndef IO_REG16
         #define IO_REG16
     #endif
@@ -580,7 +656,12 @@
 
     #define IIF_PORTH(true, false) true
 #else
-    #define IOREG_TABLE_PINH NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINH NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINH ,NOT_A_PORT
+    #endif
     #define IIF_PORTH(true, false) false
 #endif // PORTH
 
@@ -590,7 +671,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 8
-    #define IOREG_TABLE_PINI ,(ioreg_t) ((volatile uint16_t) &PINI)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINI (ioreg_t) ((volatile uint16_t) &PINI)
+    #else
+        #define IOREG_TABLE_PINI ,(ioreg_t) ((volatile uint16_t) &PINI)
+    #endif
     #ifndef IO_REG16
         #define IO_REG16
     #endif
@@ -651,7 +737,12 @@
 
     #define IIF_PORTI(true, false) true
 #else
-    #define IOREG_TABLE_PINI NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINI NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINI ,NOT_A_PORT
+    #endif
     #define IIF_PORTI(true, false) false
 #endif // PORTI
 
@@ -661,7 +752,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 9
-    #define IOREG_TABLE_PINJ ,(ioreg_t) ((volatile uint16_t) &PINJ)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINJ (ioreg_t) ((volatile uint16_t) &PINJ)
+    #else
+        #define IOREG_TABLE_PINJ ,(ioreg_t) ((volatile uint16_t) &PINJ)
+    #endif
     #ifndef IO_REG16
         #define IO_REG16
     #endif
@@ -722,7 +818,12 @@
 
     #define IIF_PORTJ(true, false) true
 #else
-    #define IOREG_TABLE_PINJ NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINJ NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINJ ,NOT_A_PORT
+    #endif
     #define IIF_PORTJ(true, false) false
 #endif // PORTJ
 
@@ -732,7 +833,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 10
-    #define IOREG_TABLE_PINK ,(ioreg_t) ((volatile uint16_t) &PINK)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINK (ioreg_t) ((volatile uint16_t) &PINK)
+    #else
+        #define IOREG_TABLE_PINK ,(ioreg_t) ((volatile uint16_t) &PINK)
+    #endif
     #ifndef IO_REG16
         #define IO_REG16
     #endif
@@ -793,7 +899,12 @@
 
     #define IIF_PORTK(true, false) true
 #else
-    #define IOREG_TABLE_PINK NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINK NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINK ,NOT_A_PORT
+    #endif
     #define IIF_PORTK(true, false) false
 #endif // PORTK
 
@@ -803,7 +914,12 @@
     #endif // IO_LOW_PORT
     #undef PORT_HIGH_INDEX
     #define PORT_HIGH_INDEX 11
-    #define IOREG_TABLE_PINL ,(ioreg_t) ((volatile uint16_t) &PINL)
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINL (ioreg_t) ((volatile uint16_t) &PINL)
+    #else
+        #define IOREG_TABLE_PINL ,(ioreg_t) ((volatile uint16_t) &PINL)
+    #endif
     #ifndef IO_REG16
         #define IO_REG16
     #endif
@@ -864,7 +980,12 @@
 
     #define IIF_PORTL(true, false) true
 #else
-    #define IOREG_TABLE_PINL NOT_A_PORT
+    #ifdef IOREG_TABLE_FIRST_ITEM
+        #undef IOREG_TABLE_FIRST_ITEM
+        #define IOREG_TABLE_PINL NOT_A_PORT
+    #else
+         #define IOREG_TABLE_PINL ,NOT_A_PORT
+    #endif
     #define IIF_PORTL(true, false) false
 #endif // PORTL
 

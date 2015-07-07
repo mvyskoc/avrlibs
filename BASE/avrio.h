@@ -82,9 +82,9 @@
 #include "avrio_pins.h"
 
 #ifdef IO_REG16
-    #define ioreg_t volatile uint16_t
+    typedef volatile uint16_t ioreg_t;
 #else
-    #define ioreg_t volatile uint8_t
+    typedef volatile uint8_t ioreg_t;
 #endif // IO_REG16
 
 #define NOT_A_PORT 255

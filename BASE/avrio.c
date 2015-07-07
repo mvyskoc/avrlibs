@@ -25,7 +25,7 @@ inline void pinMode(uint8_t pin, uint8_t mode)
 {
     uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
-	volatile uint8_t *reg, *out;
+	ioreg_t *reg, *out;
 
 	reg = portModeRegister( port );
 	out = portOutputRegister( port );
@@ -46,7 +46,7 @@ void digitalWrite(uint8_t pin, uint8_t val)
 {
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
-	volatile uint8_t *out;
+	ioreg_t *out;
 
 	out = portOutputRegister(port);
 

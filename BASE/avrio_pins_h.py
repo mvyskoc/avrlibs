@@ -54,18 +54,26 @@ for i,p in enumerate(ports):
     out_file.write("#define ioPORT%s %d\n" % (p, i) )
 out_file.write("\n")
 
+out_file.write("#define IOREG_TABLE_FIRST_ITEM\n")
 
 for i, p in enumerate(ports):
     out_file.write("\n")
     out_file.write("#ifdef PORT%s\n" % (p,) )
-
+    
     out_file.write("    #ifndef PORT_LOW_INDEX\n")
     out_file.write("        #define PORT_LOW_INDEX ioPORT%s\n" % (p,) )
     out_file.write("    #endif // IO_LOW_PORT\n")
 
     out_file.write("    #undef PORT_HIGH_INDEX\n")
     out_file.write("    #define PORT_HIGH_INDEX %d\n" % (i,) )
-    out_file.write("    #define IOREG_TABLE_PIN%s ,(ioreg_t) ((volatile uint16_t) &PIN%s)\n" % (p,p) )
+
+
+    out_file.write("    #ifdef IOREG_TABLE_FIRST_ITEM\n")
+    out_file.write("        #undef IOREG_TABLE_FIRST_ITEM\n")
+    out_file.write("        #define IOREG_TABLE_PIN%s (ioreg_t) ((volatile uint16_t) &PIN%s)\n" % (p,p) )
+    out_file.write("    #else\n")
+    out_file.write("        #define IOREG_TABLE_PIN%s ,(ioreg_t) ((volatile uint16_t) &PIN%s)\n" % (p,p) )
+    out_file.write("    #endif\n")
 
     if i >= ports.index("H"):
         out_file.write("    #ifndef IO_REG16\n")
@@ -99,7 +107,12 @@ for i, p in enumerate(ports):
     out_file.write("\n")
     out_file.write("    #define IIF_PORT%s(true, false) true\n" % (p,) )
     out_file.write("#else\n")
-    out_file.write("    #define IOREG_TABLE_PIN%s NOT_A_PORT\n" % (p,) )
+    out_file.write("    #ifdef IOREG_TABLE_FIRST_ITEM\n")
+    out_file.write("        #undef IOREG_TABLE_FIRST_ITEM\n")
+    out_file.write("        #define IOREG_TABLE_PIN%s NOT_A_PORT\n" % (p,) )
+    out_file.write("    #else\n")
+    out_file.write("         #define IOREG_TABLE_PIN%s ,NOT_A_PORT\n" % (p,) )
+    out_file.write("    #endif\n")
     out_file.write("    #define IIF_PORT%s(true, false) false\n" % (p,) )
                    
     out_file.write("#endif // PORT%s\n" % (p,) )
