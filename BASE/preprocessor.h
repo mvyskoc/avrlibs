@@ -23,6 +23,7 @@
 #define OBSTRUCT(...) __VA_ARGS__ DEFER(EMPTY)()
 
 #define CAT(a, ...) PRIMITIVE_CAT(a, __VA_ARGS__)
+#define CAT3(a, b, c) CAT(CAT(a,b), c)
 #define PRIMITIVE_CAT(a, ...) a ## __VA_ARGS__
 
 #define GET_MACRO2(_1,_2, NAME,...) NAME
@@ -41,5 +42,17 @@
                _IS_EMPTY_RETURN_VALUE,          \
                _IS_EMPTY_RETURN_EMPTY,          \
                )(__VA_ARGS__)
+
+
+/* Return 1 if macro given by its name is defined and it is empty.
+ * Return 0 if macro is not defined at all or it is defined with some value.
+ */
+#define IS_EMPTY_DEF(name) \
+  CAT(_IS_EMPTY_DEF_, IS_NOT_EMPTY(name, 0))()
+
+#define _IS_EMPTY_DEF_()  1
+#define _IS_EMPTY_DEF_0() 0
+
+#define IS_NOT_EMPTY_DEF(name) !IS_EMPTY_DEF(name)
 
 #endif // PREPROCESSOR_H_INCLUDED
