@@ -8,8 +8,10 @@ The library is divided into the following folders. Copy all files of required li
   - `global.h` global constants definitions, you must at least modify (processor frequency `F_CPU` and timer prescaler value `CLK_DIV` needed in `avrtime.h`). 
   - `avrtime.h` - helper macro functions for time measurement
   - `preprocessor.h` - Pre-processor helper macro definitions for writing more complex macros. It is required by `avrio.h`.    
-* **LCD_HD44780/** Library for communication with alphanumerical liquid crystal displays (LCDs) based on the Hitachi HD44780 (or a compatible for example St7066) chipset. You must modify `lcd.h` before use.
-  
+* [LCD_HD44780](LCD_HD44780/readme.md)  Library for communication with alphanumerical liquid crystal displays (LCDs) based on the Hitachi HD44780 (or a compatible for example St7066) chipset. You must modify `lcd.h` before use.
+
+* [hwserial](hwserial/readme.md) Hardware usart/uart communication library. There are up to 4 USART supported if the MCU support them.
+
 * **pt/** Copy of Protothreads library from Adam Dunkels. For details, see pt/ or http://dunkels.com/adam/pt/ The library can be used with LCD_HD44780 library.
 
   
