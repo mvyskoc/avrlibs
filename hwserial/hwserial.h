@@ -40,8 +40,8 @@
  *
  */
 
-#ifndef SERIAL_H_INCLUDED
-#define SERIAL_H_INCLUDED
+#ifndef HWSERIAL_H_INCLUDED
+#define HWSERIAL_H_INCLUDED
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
